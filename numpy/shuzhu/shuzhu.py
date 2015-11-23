@@ -1,5 +1,5 @@
 # -*-coding: utf-8 -*-
-#numpy 多维数组
+#numpy 创建数组
 __author__ = 'quanchimi'
 
 import numpy as np
