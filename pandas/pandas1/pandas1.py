@@ -5,4 +5,4 @@ __author__ = 'quanchimi'
 import pandas as pd
 #Series
 obj = pd.Series([4,5,-8,2.])
-print(obj)
+print(obj,obj.dtype)
