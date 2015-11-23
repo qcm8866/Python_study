@@ -1,5 +1,5 @@
 # -*- coding:utf8 -*-
-#pandas数组
+#pandas数组 学习
 __author__ = 'quanchimi'
 
 import pandas as pd
