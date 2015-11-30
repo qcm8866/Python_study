@@ -21,8 +21,3 @@ print(np.dot(arr3.T,arr3))
 print
 
 #高维数组转置
-arr4 = np.arrange(16).reshap((2,3,4))
-
-print(arr4)
-print
-print(arr4.transpose((1,0,2)))
