@@ -3,16 +3,16 @@ __author__ = 'quanchimi'
 
 import requests
 from bs4 import BeautifulSoup
-
+xh='312012080609303'
 s=requests.session()
 jwc_url = 'http://jwc.xhu.edu.cn/default6.aspx'
 
 result = s.get(jwc_url)
 
-soup_login = BeautifulSoup(result.text,"html.parser")
+soup_login = BeautifulSoup(result.text,"lxml")
 login_VIEWSTATE = soup_login.body.form.input['value']
 
-xh='312012080609303'
+
 headers ={
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.89 Safari/537.36',
     # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -25,7 +25,6 @@ headers ={
     # 'Referer':'http://jwc.xhu.edu.cn/default6.aspx',
     # 'Connection':'keep-alive',
 }
-
 data={
     '__VIEWSTATE':login_VIEWSTATE,
     # 'tbtns':'',
@@ -44,33 +43,30 @@ login_result = s.post(jwc_url,headers=headers,data=data)
 
 # print(login_result)
 xs_main_page = s.get(xs_main_url)
-# print(xs_main_page.text)
-cjcx_headers={
-    'Referer': 'http://jwc.xhu.edu.cn/xs_main.aspx?xh=312012080609303'
-}
-cjcx_url = 'http://jwc.xhu.edu.cn/xscjcx.aspx?xh=312012080609303&xm=%C8%A8%B3%DB%F4%CD&gnmkdm=N121605'
-cjcx_page =s.get(cjcx_url,headers=cjcx_headers)
-
-
-
 # soup_main_page = BeautifulSoup(xs_main_page.text,"lxml")
 # main_page_VIEWSTATE = soup_main_page.body.form.input.next_sibling.next_sibling.next_sibling.next_sibling["value"]
-# main_data={
-#     '__VIEWSTATE':main_page_VIEWSTATE,
-#     'btn_zg':'课程最高成绩'
-# }
+main_page_headers={
+    'Referer': 'http://jwc.xhu.edu.cn/xs_main.aspx?xh=312012080609303'
+}
+main_page_params={
+    'xh':xh,
+    'xm':'权驰敉',
+    'gnmkdm':'N121605'
+}
+cjcx_url = 'http://jwc.xhu.edu.cn/xscjcx.aspx?'
+cjcx_page =s.get(cjcx_url,headers=main_page_headers,params=main_page_params)
+soup_cjcx_page =BeautifulSoup(cjcx_page.text,"lxml")
+cjcx_VIEWSTATE =soup_cjcx_page.body.form.input.next_sibling.next_sibling.next_sibling.next_sibling["value"]
 
+cjcx_headers={
+    'Origin': 'http://jwc.xhu.edu.cn',
+    'Referer': 'http://jwc.xhu.edu.cn/xscjcx.aspx?xh=312012080609303&xm=%C8%A8%B3%DB%F4%CD&gnmkdm=N121605'
+}
+cjcx_data={
+    '__VIEWSTATE':cjcx_VIEWSTATE,
+    'btn_zg':'课程最高成绩',
+}
+cjcx_result = s.post(cjcx_page.url, data=cjcx_data,headers=cjcx_headers)
+# print(cjcx_result.text)
+soup_cjcx_result=BeautifulSoup(cjcx_result.text,'lxml')
 
-# cjcx_url = 'http://jwc.xhu.edu.cn/xscjcx.aspx?xh=312012080609303&xm=%C8%A8%B3%DB%F4%CD&gnmkdm=N121605'
-# cjcx_post.encoding='utf-8'
-# print(cjcx_post.text)
-# # cjcx = s.get(cjcx_url,data=cjcx_data)
-# # print(cjcx)
-# # print(cjcx.url)
-# # print(cjcx.text)
-# # # cjcx_url = 'http://jwc.xhu.edu.cn/xscjcx.aspx?xh=312012080609303&xm=%C8%A8%B3%DB%F4%CD&gnmkdm=N121605'
-# #
-# # cjcx = s.get(cjcx_url,params =cjcx_data)
-# # print(cjcx.text)
-# # print(cjcx.url)
-# # print(r2.text)
