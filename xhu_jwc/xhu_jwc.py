@@ -48,25 +48,29 @@ xs_main_page = s.get(xs_main_url)
 main_page_headers={
     'Referer': 'http://jwc.xhu.edu.cn/xs_main.aspx?xh=312012080609303'
 }
-main_page_params={
+cjcx_params={
     'xh':xh,
     'xm':'权驰敉',
     'gnmkdm':'N121605'
 }
 cjcx_url = 'http://jwc.xhu.edu.cn/xscjcx.aspx?'
-cjcx_page =s.get(cjcx_url,headers=main_page_headers,params=main_page_params)
+cjcx_page =s.get(cjcx_url,headers=main_page_headers,params=cjcx_params)
 soup_cjcx_page =BeautifulSoup(cjcx_page.text,"lxml")
 cjcx_VIEWSTATE =soup_cjcx_page.body.form.input.next_sibling.next_sibling.next_sibling.next_sibling["value"]
 
 cjcx_headers={
     'Origin': 'http://jwc.xhu.edu.cn',
-    'Referer': 'http://jwc.xhu.edu.cn/xscjcx.aspx?xh=312012080609303&xm=%C8%A8%B3%DB%F4%CD&gnmkdm=N121605'
+    'Referer': cjcx_page.url
 }
 cjcx_data={
     '__VIEWSTATE':cjcx_VIEWSTATE,
     'btn_zg':'课程最高成绩',
 }
 cjcx_result = s.post(cjcx_page.url, data=cjcx_data,headers=cjcx_headers)
-# print(cjcx_result.text)
-soup_cjcx_result=BeautifulSoup(cjcx_result.text,'lxml')
+# cjcx_result.encoding = 'gb2312'
+soup_cjcx_result=BeautifulSoup(cjcx_result.text,'html5lib')
+# soup_cjcx_result.encoding = 'gb2312'
 
+cjcx_result_tr = soup_cjcx_result.find("div",class_="main_box")
+
+print(cjcx_result_tr)
